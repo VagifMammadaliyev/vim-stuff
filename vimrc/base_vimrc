@@ -1,0 +1,108 @@
+set nocompatible
+syntax enable
+set backspace=indent,eol,start
+set ruler
+set incsearch
+set showcmd
+set hlsearch
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set number
+set noshowmode
+set fixeol
+"set cursorline
+set ignorecase
+set smartcase
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/vendor,*/node_modules/*,*/env/*,*/.env/*,*/venv/*,*/.venv/*,*/__pycache__/*
+
+autocmd FileType make setlocal noexpandtab
+
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/syntastic'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+Plugin 'majutsushi/tagbar'
+Plugin 'kien/ctrlp.vim'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Raimondi/delimitMate'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'HTML-AutoCloseTag'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'tpope/vim-unimpaired'
+
+call vundle#end()
+
+filetype plugin indent on
+
+"ctags command path
+let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
+
+"Airline related
+let g:airline_theme='deus'
+let g:airline_detect_paste=1
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#hunks#non_zero_only = 1
+set laststatus=2
+
+"Nerdtree related
+nmap <silent> <leader>t :NERDTreeTabsToggle<CR>
+let g:nerdtree_tabs_open_on_console_startup = 0
+
+"Syntax check related
+let g:syntastic_error_symbol = '✘'
+let g:syntastic_warning_symbol = "▲"
+let g:syntastic_python_checkers = ['python']
+hi clear SignColumn
+
+augroup mySyntastic
+   au!
+   au FileType tex let b:syntastic_mode = "passive"
+augroup END
+
+"Specify one location for vimtags, easier cleanup
+"and do not need to modify gitignore
+set tags=~/.vimtags
+
+"Easy tags configuration
+"Make it async as we store everything in one location
+"so sync executing may hurt performance
+let g:easytags_async = 1
+let g:easytags_auto_highlight=0
+let g:easytags_events = ['BufReadPost', 'BufWritePost']
+let g:easytags_dynamic_files = 2
+let g:easytags_resolve_links = 1
+let g:easytags_suppress_ctags_warning = 1
+nmap <silent> <leader>b :TagbarToggle<CR>
+
+"Delimitmate realted
+let delimitMate_expand_cr = 1
+augroup mydelimitMate
+   au!
+   au FileType markdown let b:delimitMate_nesting_quotes = ["`"]
+   au FileType tex let b:delimitMate_quotes = ""
+   au FileType tex let b:delimitMate_matchpairs = "(:),[:],{:},`:'"
+   au FileType python let b:delimitMate_nesting_quotes = ['"', "'"]
+augroup END
+
+"For cleaner files
+let g:strip_whitespace_on_save=1
+let g:strip_whitespace_confirm=0
+let g:strip_max_file_size = 5000
+
+
+"autocmd FileType python setlocal completeopt-=preview
+"autocmd BufWritePre *.py execute ':Black'
+
+highlight! link SignColumn LineNr
+highlight clear LineNr
+set updatetime=100
+

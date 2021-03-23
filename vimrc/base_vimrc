@@ -54,6 +54,12 @@ let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#hunks#non_zero_only = 1
 set laststatus=2
 
+"Setting this using autocmd because
+"hi command does not work here
+"https://vi.stackexchange.com/questions/10035/how-can-i-make-highlighting-commands-in-vimrc-take-effect-immediately-with-vim
+autocmd VimEnter * hi airline_c  ctermbg=NONE guibg=NONE
+autocmd VimEnter * hi airline_tabfill ctermbg=NONE guibg=NONE
+
 "Nerdtree related
 nmap <silent> <leader>t :NERDTreeTabsToggle<CR>
 let g:nerdtree_tabs_open_on_console_startup = 0
